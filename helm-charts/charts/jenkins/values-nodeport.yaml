@@ -1,1 +1,4 @@
-values-nodeport.yaml
+controller:
+  serviceType: NodePort
+  servicePort: 8080
+  nodePort: 30080
