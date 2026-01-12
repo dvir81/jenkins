@@ -1,7 +1,8 @@
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: one
+  generateName: one-
   annotations:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "1"
@@ -9,15 +10,15 @@ spec:
   template:
     spec:
       containers:
-        - name: job
-          image: busybox
-          command: ["sh", "-c", "echo Job one (PreSync wave 1) && sleep 5"]
+        - name: one
+          image: alpine:latest
+          command: ["sh", "-c", "echo one && sleep 5"]
       restartPolicy: Never
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: two
+  generateName: two-
   annotations:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "2"
@@ -25,9 +26,9 @@ spec:
   template:
     spec:
       containers:
-        - name: job
-          image: busybox
-          command: ["sh", "-c", "echo Job two (PreSync wave 2) && sleep 5"]
+        - name: two
+          image: alpine:latest
+          command: ["sh", "-c", "echo two && sleep 5"]
       restartPolicy: Never
 ---
 apiVersion: batch/v1
@@ -36,15 +37,17 @@ metadata:
   name: three
   annotations:
     argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     argocd.argoproj.io/sync-wave: "1"
 spec:
   template:
     spec:
       containers:
-        - name: job
-          image: busybox
-          command: ["sh", "-c", "echo Job three (Sync wave 1) && sleep 5"]
+        - name: three
+          image: alpine:latest
+          command: ["sh", "-c", "echo three && sleep 5"]
       restartPolicy: Never
+  backoffLimit: 0
 ---
 apiVersion: batch/v1
 kind: Job
@@ -52,15 +55,17 @@ metadata:
   name: four
   annotations:
     argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     argocd.argoproj.io/sync-wave: "2"
 spec:
   template:
     spec:
       containers:
-        - name: job
-          image: busybox
-          command: ["sh", "-c", "echo Job four (Sync wave 2) && sleep 5"]
+        - name: four
+          image: alpine:latest
+          command: ["sh", "-c", "echo four && sleep 5"]
       restartPolicy: Never
+  backoffLimit: 0
 ---
 apiVersion: batch/v1
 kind: Job
@@ -68,15 +73,17 @@ metadata:
   name: five
   annotations:
     argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     argocd.argoproj.io/sync-wave: "3"
 spec:
   template:
     spec:
       containers:
-        - name: job
-          image: busybox
-          command: ["sh", "-c", "echo Job five (Sync wave 3) && sleep 5"]
+        - name: five
+          image: alpine:latest
+          command: ["sh", "-c", "echo five && sleep 5"]
       restartPolicy: Never
+  backoffLimit: 0
 ---
 apiVersion: batch/v1
 kind: Job
@@ -84,12 +91,11 @@ metadata:
   name: six
   annotations:
     argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   template:
     spec:
       containers:
-        - name: job
-          image: busybox
-          command: ["sh", "-c", "echo Job six (PostSync wave 1) && sleep 5"]
+        - name: six
+          image: alpine:latest
+          command: ["sh", "-c", "echo six && sleep 5"]
       restartPolicy: Never
