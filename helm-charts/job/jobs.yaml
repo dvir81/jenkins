@@ -12,7 +12,7 @@ spec:
       containers:
         - name: one
           image: alpine:latest
-          command: ["sh", "-c", "echo one && sleep 5"]
+          command: ["sh", "-c", "echo five rerun && sleep 5"]
       restartPolicy: Never
 ---
 apiVersion: batch/v1
